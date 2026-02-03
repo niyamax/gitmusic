@@ -72,6 +72,9 @@ const GitSequencer = () => {
     // State for toast notification
     const [showToast, setShowToast] = useState(false);
 
+    // State for embed modal
+    const [showEmbed, setShowEmbed] = useState(false);
+
     // Auto-hide toast
     useEffect(() => {
         if (showToast) {
@@ -602,6 +605,35 @@ const GitSequencer = () => {
         link.click();
     };
 
+    // Generate embed code
+    const getEmbedCode = () => {
+        const embedUrl = `${window.location.origin}/embed/${encodeURIComponent(username)}`;
+        return `<iframe src="${embedUrl}" width="400" height="180" frameborder="0" scrolling="no" style="border-radius: 8px; border: none;"></iframe>`;
+    };
+
+    // Copy embed code to clipboard
+    const handleCopyEmbed = () => {
+        const embedCode = getEmbedCode();
+        navigator.clipboard.writeText(embedCode).then(() => {
+            setShowToast(true);
+            setShowEmbed(false);
+        }).catch(() => {
+            // Fallback
+            try {
+                const textArea = document.createElement("textarea");
+                textArea.value = embedCode;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                setShowToast(true);
+                setShowEmbed(false);
+            } catch (err) {
+                console.error('Failed to copy embed code', err);
+            }
+        });
+    };
+
 
 
     // Load user from URL on mount
@@ -674,8 +706,36 @@ const GitSequencer = () => {
         <div className="terminal-window">
             {/* Toast Notification */}
             <div className={`toast-notification ${showToast ? 'show' : ''}`}>
-                Link copied to clipboard
+                Copied to clipboard
             </div>
+
+            {/* Embed Modal */}
+            {showEmbed && (
+                <div className="embed-modal-overlay" onClick={() => setShowEmbed(false)}>
+                    <div className="embed-modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="embed-modal-header">
+                            <span>Embed Widget</span>
+                            <button className="embed-modal-close" onClick={() => setShowEmbed(false)}>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        </div>
+                        <p className="embed-modal-desc">Add this widget to your website to showcase your contribution music.</p>
+                        <div className="embed-code-box">
+                            <code>{getEmbedCode()}</code>
+                        </div>
+                        <button className="embed-copy-btn" onClick={handleCopyEmbed}>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                            Copy Code
+                        </button>
+                    </div>
+                </div>
+            )}
 
             {/* Simple Header */}
             {/* Simple Fieldset Header */}
@@ -863,9 +923,44 @@ const GitSequencer = () => {
                     </svg>
                     <span>Copy Link</span>
                 </button>
+                <button
+                    className="ctrl-btn"
+                    onClick={() => setShowEmbed(true)}
+                    disabled={!data || isAnimating || error || hasNoContributions}
+                    title="Get embed code for your website"
+                >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="16 18 22 12 16 6"></polyline>
+                        <polyline points="8 6 2 12 8 18"></polyline>
+                    </svg>
+                    <span>Embed</span>
+                </button>
             </div>
 
 
+
+            {/* Inline Embed Section - shows after music is generated */}
+            {data && !isAnimating && !error && !hasNoContributions && (
+                <div className="embed-section">
+                    <div className="embed-section-header">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="16 18 22 12 16 6"></polyline>
+                            <polyline points="8 6 2 12 8 18"></polyline>
+                        </svg>
+                        <span>Embed on your website</span>
+                    </div>
+                    <div className="embed-section-code">
+                        <code>{getEmbedCode()}</code>
+                    </div>
+                    <button className="embed-section-copy" onClick={handleCopyEmbed}>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        Copy Embed Code
+                    </button>
+                </div>
+            )}
 
             {/* Footer hint */}
             <div className="footer-hint">

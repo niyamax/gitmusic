@@ -1,0 +1,227 @@
+/* ===== EMBED WIDGET ===== */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+.embed-widget {
+    width: 100%;
+    height: auto;
+    background: var(--bg, #0d0d0d);
+    color: var(--text, #aaaaaa);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* Header */
+.embed-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+}
+
+.embed-brand {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.embed-favicon {
+    width: 12px;
+    height: 12px;
+    margin-right: -2px;
+    margin-left: -4px;
+}
+
+.embed-title {
+    color: var(--accent, #f23400);
+    font-weight: 700;
+    font-size: 14px;
+    margin-top: 1px;
+}
+
+.embed-username {
+    color: var(--text, #aaaaaa);
+    font-weight: 500;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+/* Loading & Error States */
+.embed-loading,
+.embed-error {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim, #555555);
+    font-size: 12px;
+}
+
+.embed-error {
+    color: var(--error, #f23400);
+}
+
+/* Graph */
+.embed-graph {
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin-bottom: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: #444 transparent;
+}
+
+.embed-graph::-webkit-scrollbar {
+    height: 2px;
+}
+
+.embed-graph::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.embed-graph::-webkit-scrollbar-thumb {
+    background-color: #444;
+    border-radius: 2px;
+}
+
+.embed-graph-grid {
+    display: flex;
+    gap: 2px;
+    height: 100%;
+    min-width: max-content;
+}
+
+.embed-week-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+.embed-day-cell {
+    width: 8px;
+    height: 8px;
+    background: var(--level-0, #1a1a1a);
+    border-radius: 1px;
+    transition: background 0.1s, box-shadow 0.1s;
+}
+
+.embed-day-cell.playing {
+    background: var(--text-bright, #ffffff) !important;
+    box-shadow: 0 0 6px var(--text-bright, #ffffff);
+}
+
+.embed-day-cell.level-1 {
+    background: var(--level-1, #0e4429);
+}
+
+.embed-day-cell.level-2 {
+    background: var(--level-2, #006d32);
+}
+
+.embed-day-cell.level-3 {
+    background: var(--level-3, #26a641);
+}
+
+.embed-day-cell.level-4 {
+    background: var(--level-4, #39d353);
+}
+
+/* Controls */
+.embed-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.embed-ctrl-btn {
+    width: 100%;
+    padding: 0.5rem 0.8rem;
+    background: transparent;
+    border: 1px solid var(--text-dim, #555555);
+    color: var(--text, #aaaaaa);
+    font-family: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+.embed-ctrl-btn:hover:not(:disabled) {
+    border-color: var(--text, #aaaaaa);
+    color: var(--text-bright, #ffffff);
+}
+
+.embed-ctrl-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.embed-ctrl-btn.active {
+    background: var(--success, #4ec9b0);
+    border-color: var(--success, #4ec9b0);
+    color: #000;
+}
+
+.embed-link {
+    color: var(--text, #555555);
+    font-size: 0.75rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    transition: color 0.15s;
+}
+
+.embed-link:hover {
+    color: var(--accent, #f23400);
+}
+
+/* Responsive */
+@media (max-width: 400px) {
+    .embed-widget {
+        padding: 8px;
+    }
+
+    .embed-favicon {
+        width: 14px;
+        height: 14px;
+    }
+
+    .embed-title {
+        font-size: 11px;
+    }
+
+    .embed-dot {
+        width: 2px;
+        height: 2px;
+    }
+
+    .embed-username {
+        font-size: 11px;
+    }
+
+    .embed-day-cell {
+        width: 6px;
+        height: 6px;
+    }
+
+    .embed-ctrl-btn {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.8rem;
+    }
+
+    .embed-link {
+        font-size: 0.7rem;
+    }
+}
