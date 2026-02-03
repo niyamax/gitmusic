@@ -503,17 +503,20 @@ const GitSequencer = () => {
                 const combinedStream = new MediaStream(tracks);
 
                 // 4. Setup Recorder
-                // Try to find supported mime type (Prioritize MP4)
-                let mimeType = 'video/mp4; codecs=h264,aac';
-                if (!MediaRecorder.isTypeSupported(mimeType)) {
-                    mimeType = 'video/mp4';
-                }
-                if (!MediaRecorder.isTypeSupported(mimeType)) {
-                    mimeType = 'video/webm; codecs=vp9';
-                }
-                if (!MediaRecorder.isTypeSupported(mimeType)) {
-                    mimeType = 'video/webm';
-                }
+                // Try to find supported mime type (Prioritize H.264 + AAC)
+                const mimeTypes = [
+                    'video/mp4; codecs="avc1.42E01E, mp4a.40.2"',  // H.264 Baseline + AAC-LC
+                    'video/mp4; codecs="avc1.4D401E, mp4a.40.2"',  // H.264 Main + AAC-LC
+                    'video/mp4; codecs="avc1.64001E, mp4a.40.2"',  // H.264 High + AAC-LC
+                    'video/mp4; codecs=h264,aac',
+                    'video/mp4',
+                    'video/webm; codecs="h264, opus"',             // WebM with H.264
+                    'video/webm; codecs=vp9,opus',
+                    'video/webm; codecs=vp8,opus',
+                    'video/webm'
+                ];
+
+                let mimeType = mimeTypes.find(type => MediaRecorder.isTypeSupported(type)) || 'video/webm';
 
                 const recorder = new MediaRecorder(combinedStream, { mimeType, videoBitsPerSecond: 8000000 }); // 8Mbps for HQ
                 mediaRecorderRef.current = recorder;
