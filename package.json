@@ -11,6 +11,7 @@
     "test:security": "node --test tests/*security.test.mjs"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "axios": "^1.20.0",
     "date-fns": "^4.1.0",
     "react": "^19.2.0",

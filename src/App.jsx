@@ -1,4 +1,5 @@
 import React from 'react'
+import { Analytics } from '@vercel/analytics/react'
 import GitSequencer from './components/GitSequencer'
 import EmbedWidget from './components/EmbedWidget'
 
@@ -7,13 +8,21 @@ function App() {
   const isEmbed = window.location.pathname.startsWith('/embed/')
 
   if (isEmbed) {
-    return <EmbedWidget />
+    return (
+      <>
+        <EmbedWidget />
+        <Analytics />
+      </>
+    )
   }
 
   return (
-    <div className="app-container">
-      <GitSequencer />
-    </div>
+    <>
+      <div className="app-container">
+        <GitSequencer />
+      </div>
+      <Analytics />
+    </>
   )
 }
 
