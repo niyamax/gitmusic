@@ -53,4 +53,4 @@ npm run dev
 
 ## License
 
-MIT
+Git Music is licensed under the [MIT License](./LICENSE). Copyright (c) 2026 Niyas V.
